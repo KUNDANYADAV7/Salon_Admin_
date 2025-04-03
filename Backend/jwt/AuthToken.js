@@ -34,3 +34,5 @@ const createTokenAndSaveCookies = async (userId, res) => {
   await User.findByIdAndUpdate(userId, { token });
   return token;
 };
+
+export default createTokenAndSaveCookies;
