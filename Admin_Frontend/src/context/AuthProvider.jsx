@@ -211,7 +211,7 @@ export const AuthProvider = ({ children }) => {
     <AuthContext.Provider
       value={{
         blogs,
-        profile,
+        profile: profile || {},
         setProfile,
         isAuthenticated,
         setIsAuthenticated,
