@@ -9,8 +9,6 @@ const Blogs = () => {
       // Sort blogs by `createdAt` in descending order (latest blogs first)
       const sortedBlogs = [...allblogs].sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
 
-      const navigate = useNavigate();
-
   return (
     <div className="max-w-4xl mx-auto mt-20">
       <h1 className="text-3xl font-bold text-gray-800 mb-6 text-center">Blog Posts</h1>
@@ -33,6 +31,8 @@ const Blogs = () => {
     </div>
   );
 };
+
+const navigate = useNavigate();
 
 const BlogCard = ({ title, createdAt, about, photo }) => (
   <div className="bg-white rounded-lg shadow-md overflow-hidden">
