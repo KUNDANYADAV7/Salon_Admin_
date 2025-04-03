@@ -1,7 +1,7 @@
 import { createRoot } from 'react-dom/client';
 import App from './App';
 import './index.css';
-import {AuthProvider} from './context/AuthProvider'
+import { AuthProvider } from './context/AuthProvider';
 import { BlogProvider } from './context/BlogContext';
 import { MenProvider } from './context/MenContext';
 import { WomenProvider } from './context/WomenContext';

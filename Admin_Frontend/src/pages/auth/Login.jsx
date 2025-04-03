@@ -12,14 +12,56 @@ function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
+  // const handleLogin = async (e) => {
+  //   e.preventDefault();
+
+  //   if (!email || !password) {
+  //     toast.error("Please fill in all required fields");
+  //     return;
+  //   }
+
+  //   try {
+  //     const response = await axios.post(
+  //       `${config.apiUrl}/api/users/login`,
+  //       { email, password },
+  //       {
+  //         withCredentials: true,
+  //         headers: { "Content-Type": "application/json" },
+  //       }
+  //     );
+
+  //     const { data } = response;
+
+  //     localStorage.setItem("jwt", data.token);
+  //     toast.success(data.message || "User logged in successfully", {
+  //       duration: 3000,
+  //     });
+
+  //     setProfile(data?.user);
+  //     setIsAuthenticated(true);
+  //     setEmail("");
+  //     setPassword("");
+  //     navigateTo("/");
+  //   } catch (error) {
+  //     // console.error(error);
+
+  //     let errorMessage = "Login failed. Please try again.";
+  //     if (error.response && error.response.data) {
+  //       errorMessage = error.response.data.message || "Invalid credentials.";
+  //     }
+
+  //     toast.error(errorMessage, { duration: 3000 });
+  //   }
+  // };
+
   const handleLogin = async (e) => {
     e.preventDefault();
-
+  
     if (!email || !password) {
       toast.error("Please fill in all required fields");
       return;
     }
-
+  
     try {
       const response = await axios.post(
         `${config.apiUrl}/api/users/login`,
@@ -29,30 +71,44 @@ function Login() {
           headers: { "Content-Type": "application/json" },
         }
       );
-
+  
       const { data } = response;
-
-      localStorage.setItem("jwt", data.token);
-      toast.success(data.message || "User logged in successfully", {
-        duration: 3000,
-      });
-
-      setProfile(data?.user);
-      setIsAuthenticated(true);
-      setEmail("");
-      setPassword("");
-      navigateTo("/");
+  
+      if (data.token) {
+        // Store token and user details
+        localStorage.setItem("jwt", data.token);
+        setProfile(data?.user || {}); // Ensure user data is not undefined
+        setIsAuthenticated(true);
+  
+        console.log("Token Received:", data.token);
+        console.log("Stored Token:", localStorage.getItem("jwt")); // Debugging
+  
+        toast.success(data.message || "User logged in successfully", {
+          duration: 3000,
+        });
+  
+        setEmail("");
+        setPassword("");
+  
+        // Redirect after a slight delay
+        setTimeout(() => {
+          navigateTo("/");
+        }, 500);
+      } else {
+        toast.error("Login failed. No token received.");
+      }
     } catch (error) {
-      // console.error(error);
-
+      console.error("Login Error:", error.response?.data || error);
+  
       let errorMessage = "Login failed. Please try again.";
       if (error.response && error.response.data) {
         errorMessage = error.response.data.message || "Invalid credentials.";
       }
-
+  
       toast.error(errorMessage, { duration: 3000 });
     }
   };
+  
 
   return (
     <div>
