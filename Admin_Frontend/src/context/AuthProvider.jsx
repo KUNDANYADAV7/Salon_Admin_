@@ -90,8 +90,14 @@ export const AuthProvider = ({ children }) => {
 
 
   useEffect(() => {
-    fetchProfile();
+    const token = localStorage.getItem("jwt");
+    if (token) {
+      fetchProfile(); // Fetch user profile if token exists
+    } else {
+      setIsAuthenticated(false);
+    }
   }, []);
+  
 
   return (
     <AuthContext.Provider
