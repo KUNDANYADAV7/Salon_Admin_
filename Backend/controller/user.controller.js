@@ -203,7 +203,7 @@ export const forgotPassword = async (req, res) => {
             from: process.env.EMAIL_USER,
             to: user.email, // Send email to the actual user
             subject: "Reset Password Link",
-            text: `${process.env.FRONTEND_URI}/reset_password/${user._id}/${token}`,
+            text: `${process.env.FRONTEND_URI}/#/reset_password/${user._id}/${token}`,
         };
 
         // Send email

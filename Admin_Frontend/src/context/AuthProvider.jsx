@@ -133,7 +133,7 @@ export const AuthProvider = ({ children }) => {
   }, []);
   
   
-  if (loading) return <LoadingScreen />;
+  // if (loading) return <LoadingScreen />;
 
   return (
     <AuthContext.Provider
