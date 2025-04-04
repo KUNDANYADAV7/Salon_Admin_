@@ -10,8 +10,9 @@ const Profile = () => {
     name: profile?.name || "",
     phone: profile?.phone || "",
     photo: null,
-    preview: profile?.photo ? `${config.apiUrl}/${profile.photo}` : null,
+    preview: profile?.photo ? `${config.apiUrl}/${profile?.photo}` : null,
   });
+
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
