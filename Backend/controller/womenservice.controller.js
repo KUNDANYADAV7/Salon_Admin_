@@ -277,7 +277,8 @@ export const getWomenServicesBySubTitle = async (req, res) => {
     const womenServices = await WomenService.find({ subTitle, category: { $exists: true, $ne: null } });
 
     if (womenServices.length === 0) {
-      return res.status(404).json({ message: "No services found for this subTitle" });
+      // return res.status(404).json({ message: "No services found for this subTitle" });
+      return res.status(200).json([]); // ✅ Return empty array instead of 404
     }
 
     res.status(200).json(womenServices);

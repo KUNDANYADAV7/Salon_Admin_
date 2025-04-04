@@ -10,7 +10,19 @@ export const AuthProvider = ({ children }) => {
   const [carousels, setCarousels] = useState([]);
   const [profile, setProfile] = useState(null);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [loading, setLoading] = useState(true); 
 
+  const LoadingScreen = () => {
+    return (
+      <div className="flex items-center justify-center min-h-screen bg-gradient-to-r from-blue-400 to-cyan-400">
+        <div className="flex flex-col items-center">
+          <div className="w-16 h-16 border-4 border-white border-t-transparent rounded-full animate-spin"></div>
+          <p className="mt-4 text-white text-lg font-semibold">Loading, please wait...</p>
+        </div>
+      </div>
+    );
+  };
+  
  
 // Fetch Profile
   const fetchProfile = async () => {
@@ -33,7 +45,10 @@ export const AuthProvider = ({ children }) => {
         setIsAuthenticated(true);
       }
     } catch (error) {
-      // console.error("Failed to fetch profile", error);
+      localStorage.removeItem("jwt");
+      setIsAuthenticated(false);
+    } finally {
+      setLoading(false); // Set loading to false after fetching
     }
   };
 
@@ -100,17 +115,25 @@ export const AuthProvider = ({ children }) => {
 
   useEffect(() => {
     const token = localStorage.getItem("jwt");
+  
     if (token) {
-      fetchProfile().catch(() => {
-        localStorage.removeItem("jwt");
-        setIsAuthenticated(false);
-      });
+      setLoading(true); // Start loading
+      fetchProfile()
+        .catch(() => {
+          localStorage.removeItem("jwt");
+          setIsAuthenticated(false);
+          setProfile(null);
+        })
+        .finally(() => setLoading(false)); // Ensure loading stops
     } else {
       setIsAuthenticated(false);
+      setProfile(null);
+      setLoading(false); // Stop loading if no token exists
     }
   }, []);
   
   
+  if (loading) return <LoadingScreen />;
 
   return (
     <AuthContext.Provider

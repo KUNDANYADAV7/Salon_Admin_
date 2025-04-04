@@ -5,6 +5,7 @@ import axios from "axios";
 import React, { createContext, useContext, useEffect, useState } from "react";
 import config from "../config";
 import toast from "react-hot-toast";
+import { useAuth } from "./AuthProvider";
 
 export const BlogContext = createContext();
 
@@ -13,9 +14,15 @@ export const BlogProvider = ({ children }) => {
   const [allblogs, setAllBlogs] = useState([]);
   const [loading, setLoading] = useState(false);
 
+      const { isAuthenticated } = useAuth();
+
   // Fetch Blogs
   const fetchMyBlogs = async () => {
     try {
+      const token = localStorage.getItem("jwt");
+
+      if (!token) return; // ✅ Prevent API call if no token
+
       setLoading(true);
       const { data } = await axios.get(`${config.apiUrl}/api/blogs/my-blog`,
         { withCredentials: true }
@@ -120,9 +127,11 @@ export const BlogProvider = ({ children }) => {
     
 
   useEffect(() => {
+    if (isAuthenticated) {
     fetchMyBlogs();
     fetchAllBlogs();
-  }, []);
+  }
+  }, [isAuthenticated]);
 
   return (
     <BlogContext.Provider value={{ myblogs,allblogs , loading, createBlog, updateBlog, getBlogById, handleDelete }}>

@@ -33,7 +33,7 @@ const MensServices = () => {
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-20">
               {sortedMenServices.map((service) => (
                 <ServiceCard
-                  key={service.id}
+                  key={service._id}
                   {...service}
                   onClick={() => handleMenServiceClick(service.subTitle)}
                 />

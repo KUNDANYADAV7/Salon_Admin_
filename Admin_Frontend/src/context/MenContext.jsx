@@ -132,6 +132,11 @@ export const MenProvider = ({ children }) => {
 
     const getMenServiceBySubtitle = async (subTitle) => {
       try {
+        if (!subTitle) {
+          setAllMenServices([]); // ✅ Clear state when no subTitle is provided
+          return;
+        }
+
         const encodedSubTitle = encodeURIComponent(subTitle); // Ensure encoding
         const response = await axios.get(`${config.apiUrl}/api/menservices/menservices/${encodedSubTitle}`, {
           withCredentials: true,
@@ -139,13 +144,16 @@ export const MenProvider = ({ children }) => {
     
         setAllMenServices(response.data);
       } catch (error) {
-        // console.error("Error fetching men service:", error.message);
-        return null;
+        if (error.response?.status === 404) {
+          // ✅ No error log for 404, just clear the state
+          setAllMenServices([]); 
+        } else {
+          console.error("Error fetching men service:", error.message);
+        }
       }
     };
     
-    
-    
+
 
   useEffect(() => {
     fetchMenServicesnocategory()

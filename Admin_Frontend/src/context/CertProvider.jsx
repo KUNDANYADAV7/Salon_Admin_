@@ -3,6 +3,7 @@ import axios from "axios";
 import React, { createContext, useContext, useEffect, useState } from "react";
 import config from "../config";
 import toast from "react-hot-toast";
+import { useAuth } from "./AuthProvider";
 
 export const CertContext = createContext();
 
@@ -11,9 +12,15 @@ export const CertProvider = ({ children }) => {
   const [allcerts, setAllCerts] = useState([]);
   const [loading, setLoading] = useState(false);
 
+    const { isAuthenticated } = useAuth(); 
+
   // Fetch Certificates
   const fetchMyCerts = async () => {
     try {
+
+      const token = localStorage.getItem("jwt");
+
+      if (!token) return; // ✅ Prevent API call if no token
       setLoading(true);
       const { data } = await axios.get(`${config.apiUrl}/api/certificates/my-certificates`,
         { withCredentials: true }
@@ -118,9 +125,11 @@ export const CertProvider = ({ children }) => {
     
 
   useEffect(() => {
+    if (isAuthenticated) {
     fetchMyCerts();
     fetchAllCerts();
-  }, []);
+  }
+  }, [isAuthenticated]);
 
   return (
     <CertContext.Provider value={{ mycerts,allcerts , loading, createCert, updateCert, getCertById, handleDelete }}>

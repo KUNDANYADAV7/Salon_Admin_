@@ -80,8 +80,6 @@ function Login() {
         setProfile(data?.user || {}); // Ensure user data is not undefined
         setIsAuthenticated(true);
   
-        console.log("Token Received:", data.token);
-        console.log("Stored Token:", localStorage.getItem("jwt")); // Debugging
   
         toast.success(data.message || "User logged in successfully", {
           duration: 3000,

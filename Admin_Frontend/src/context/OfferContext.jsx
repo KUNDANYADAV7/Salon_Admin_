@@ -2,6 +2,7 @@ import axios from "axios";
 import React, { createContext, useContext, useEffect, useState } from "react";
 import config from "../config";
 import toast from "react-hot-toast";
+import { useAuth } from "./AuthProvider";
 
 export const OfferContext = createContext();
 
@@ -10,9 +11,15 @@ export const OfferProvider = ({ children }) => {
   const [allOffers, setAllOffers] = useState([]);
   const [loading, setLoading] = useState(false);
 
+  const { isAuthenticated } = useAuth(); 
+
   // Fetch My Offers
   const fetchMyOffers = async () => {
     try {
+      const token = localStorage.getItem("jwt");
+
+      if (!token) return; // ✅ Prevent API call if no token
+
       setLoading(true);
       const { data } = await axios.get(`${config.apiUrl}/api/offers/my-offer`, {
         withCredentials: true,
@@ -127,9 +134,11 @@ export const OfferProvider = ({ children }) => {
 
 
   useEffect(() => {
-    fetchMyOffers();
-    fetchAllOffers();
-  }, []);
+    if (isAuthenticated) {
+      fetchMyOffers();
+      fetchAllOffers();
+    }
+  }, [isAuthenticated]);
 
   return (
     <OfferContext.Provider
