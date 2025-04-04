@@ -89,14 +89,27 @@ export const AuthProvider = ({ children }) => {
   };
 
 
+  // useEffect(() => {
+  //   const token = localStorage.getItem("jwt");
+  //   if (token) {
+  //     fetchProfile(); // Fetch user profile if token exists
+  //   } else {
+  //     setIsAuthenticated(false);
+  //   }
+  // }, []);
+
   useEffect(() => {
     const token = localStorage.getItem("jwt");
     if (token) {
-      fetchProfile(); // Fetch user profile if token exists
+      fetchProfile().catch(() => {
+        localStorage.removeItem("jwt");
+        setIsAuthenticated(false);
+      });
     } else {
       setIsAuthenticated(false);
     }
   }, []);
+  
   
 
   return (
