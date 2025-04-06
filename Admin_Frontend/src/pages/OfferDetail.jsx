@@ -16,6 +16,7 @@ const OfferDetail = () => {
   
     const fetchOffer = async () => {
       setLoading(true);
+      setOffer(null);
       const offerData = await getOfferById(id);
       if(offerData) {
         setOffer(offerData);
@@ -23,8 +24,22 @@ const OfferDetail = () => {
       setLoading(false);
     };
   
-    if (loading) return <p className="text-center mt-10 text-gray-500">Loading...</p>;
-    if (!offer) return <p className="text-center mt-10 text-gray-500">Offer not found</p>;
+    if (loading) {
+      return (
+        <div className="flex justify-center items-center h-screen">
+          <p className="text-center text-lg text-gray-500">Fetching offer, please wait...</p>
+        </div>
+      );
+    }
+
+
+    if (!offer) {
+      return (
+        <div className="flex justify-center items-center h-screen">
+          <p className="text-center text-lg text-gray-500">Offer not found</p>
+        </div>
+      );
+    }
   return (
     <section className="w-full bg-white py-10 mt-24">
       <div className="max-w-[90%] lg:max-w-[40%] mx-auto bg-white p-8 shadow-md rounded-lg">

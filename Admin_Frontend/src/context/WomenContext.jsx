@@ -11,7 +11,7 @@ export const WomenContext = createContext();
 export const WomenProvider = ({ children }) => {
   const [mywomenservices, setMyWomenServices] = useState([]);
   const [allwomenservices, setAllWomenServices] = useState([]);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
 
 
 

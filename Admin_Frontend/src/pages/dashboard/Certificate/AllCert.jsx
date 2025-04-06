@@ -5,10 +5,18 @@ import { Link } from "react-router-dom";
 import config from "../../../config";
 
 const AllCert = () => {
-  const { mycerts, handleDelete } = useCert();
+  const { mycerts, handleDelete, loading } = useCert();
 
   // Sort blogs by `createdAt` in descending order (latest blogs first)
   const sortedCerts = [...mycerts].sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+
+  if (loading) {
+    return (
+      <div className="flex justify-center items-center h-screen">
+        <p className="text-xl font-bold text-gray-600">Loading...</p>
+      </div>
+    );
+  }
 
   return (
     <div className="max-w-6xl mx-auto p-0 md:p-6">

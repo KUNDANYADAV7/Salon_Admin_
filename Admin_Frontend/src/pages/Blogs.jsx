@@ -1,12 +1,23 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useBlog } from '../context/BlogContext';
 import config from '../config';
 import { Link, useNavigate } from 'react-router-dom';
 
 const Blogs = () => {
-  const { allblogs } = useBlog();
+  const { allblogs, loading } = useBlog();
+  useEffect(()=>{
+    window.scrollTo(0, 0);
+  },[])
 
   const sortedBlogs = [...allblogs].sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+
+  if (loading) {
+    return (
+      <div className="flex justify-center items-center h-screen">
+        <p className="text-xl font-bold text-gray-600">Loading...</p>
+      </div>
+    );
+  }
 
   return (
     <div className="max-w-4xl mx-auto mt-20">

@@ -6,8 +6,6 @@ import toast from "react-hot-toast";
 export const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
-  const [blogs, setBlogs] = useState([]);
-  const [carousels, setCarousels] = useState([]);
   const [profile, setProfile] = useState(null);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [loading, setLoading] = useState(true); 
@@ -47,9 +45,10 @@ export const AuthProvider = ({ children }) => {
     } catch (error) {
       localStorage.removeItem("jwt");
       setIsAuthenticated(false);
-    } finally {
-      setLoading(false); // Set loading to false after fetching
-    }
+    } 
+    // finally {
+    //   setLoading(false); // Set loading to false after fetching
+    // }
   };
 
 
@@ -138,13 +137,11 @@ export const AuthProvider = ({ children }) => {
   return (
     <AuthContext.Provider
       value={{
-        blogs,
         profile,
         setProfile,
         isAuthenticated,
         setIsAuthenticated,
         handleLogout, 
-        carousels,
         updateProfile
       }}
     >

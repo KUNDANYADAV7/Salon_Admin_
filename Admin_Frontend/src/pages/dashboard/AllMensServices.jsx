@@ -6,7 +6,7 @@ import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-hot-toast';
 
 const AllMensServices = () => {
-  const { mymenservices, handleDelete, getMenServiceBySubtitle,handleDeleteBySubTitle } = useMen();
+  const { mymenservices, handleDelete, getMenServiceBySubtitle,handleDeleteBySubTitle,loading } = useMen();
   const navigate = useNavigate();
 
   // Sort services by `createdAt` in descending order (latest services first)
@@ -18,6 +18,14 @@ const handleServiceClick = async (subTitle) => {
   await getMenServiceBySubtitle(subTitle);
   navigate(`/dashboard/men's-services/${formattedTitle}`);
 };
+
+if (loading) {
+  return (
+    <div className="flex justify-center items-center h-screen">
+      <p className="text-xl font-bold text-gray-600">Loading...</p>
+    </div>
+  );
+}
 
   return (
     <div className="max-w-6xl mx-auto px-0 sm:px-6 lg:px-8">

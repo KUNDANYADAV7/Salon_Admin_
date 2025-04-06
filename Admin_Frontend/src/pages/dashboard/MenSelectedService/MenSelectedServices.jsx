@@ -4,16 +4,30 @@ import { Link, useParams } from 'react-router-dom';
 import { useMen } from '../../../context/MenContext';
 
 const MenSelectedServices = () => {
-  const { allmenservices, handleDelete } = useMen();
+  const { allmenservices, handleDelete, getMenServiceBySubtitle, loading } = useMen();
   const { subTitle } = useParams();
 
   const decodedSubTitle = subTitle.replace(/-/g, " "); // Convert dashes back to spaces
+
+      useEffect(() => {
+        if (decodedSubTitle) {
+          getMenServiceBySubtitle(decodedSubTitle);
+        }
+      }, [decodedSubTitle]); 
 
   // Filter services based on the selected subTitle
   const filteredServices = allmenservices.filter(service => service.subTitle === decodedSubTitle);
 
   // Check if any service has a category
   const hasCategory = filteredServices.some(service => service.category);
+
+  if (loading) {
+    return (
+      <div className="flex justify-center items-center h-screen">
+        <p className="text-xl font-bold text-gray-600">Loading...</p>
+      </div>
+    );
+  }
 
   return (
     <div className="max-w-6xl mx-auto px-0 sm:px-6 lg:px-8">
@@ -33,7 +47,7 @@ const MenSelectedServices = () => {
       {filteredServices.length === 0 ? (
         <div className="flex flex-col items-center justify-center h-64 bg-gray-100 rounded-lg shadow-md">
           <p className="text-lg font-semibold text-gray-600">No Services Found</p>
-          <p className="text-sm text-gray-500">Start adding services to manage and offer them.</p>
+          <p className="text-sm text-gray-500 text-center">Start adding services to manage and offer them.</p>
         </div>
       ) : !hasCategory ? (
         <div className="flex flex-col items-center justify-center h-64 bg-gray-100 rounded-lg shadow-md">

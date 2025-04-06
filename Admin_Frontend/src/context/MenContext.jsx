@@ -11,7 +11,7 @@ export const MenContext = createContext();
 export const MenProvider = ({ children }) => {
   const [mymenservices, setMyMenServices] = useState([]);
   const [allmenservices, setAllMenServices] = useState([]);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
 
 
 
@@ -144,12 +144,12 @@ export const MenProvider = ({ children }) => {
     
         setAllMenServices(response.data);
       } catch (error) {
-        if (error.response?.status === 404) {
-          // ✅ No error log for 404, just clear the state
-          setAllMenServices([]); 
-        } else {
+        // if (error.response?.status === 404) {
+        //   // ✅ No error log for 404, just clear the state
+        //   setAllMenServices([]); 
+        // } else {
           console.error("Error fetching men service:", error.message);
-        }
+        // }
       }
     };
     

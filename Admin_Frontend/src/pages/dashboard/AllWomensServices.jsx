@@ -7,7 +7,7 @@ import { toast } from 'react-hot-toast';
 
 const AllWomensServices = () => {
 
- const { mywomenservices, handleDelete, getWomenServiceBySubtitle, handleDeleteBySubTitle } = useWomen();
+ const { mywomenservices, handleDelete, getWomenServiceBySubtitle, handleDeleteBySubTitle, loading } = useWomen();
   const navigate = useNavigate();
 
   // Sort services by `createdAt` in descending order (latest services first)
@@ -20,7 +20,13 @@ const handleServiceClick = async (subTitle) => {
   navigate(`/dashboard/women's-services/${formattedTitle}`);
 };
 
-
+if (loading) {
+  return (
+    <div className="flex justify-center items-center h-screen">
+      <p className="text-xl font-bold text-gray-600">Loading...</p>
+    </div>
+  );
+}
 
   return (
     <div className="max-w-6xl mx-auto px-0 sm:px-6 lg:px-8">

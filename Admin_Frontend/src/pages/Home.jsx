@@ -7,11 +7,26 @@ import { useNavigate, Link } from "react-router-dom";
 import config from "../config";
 
 const Home = () => {
-  const { mymenservices, getMenServiceBySubtitle } = useMen();
-  const { mywomenservices, getWomenServiceBySubtitle } = useWomen();
-  const { allblogs } = useBlog();
-  const { allcerts } = useCert();
+
+
+  const { mymenservices, getMenServiceBySubtitle, loading: loadingMen } = useMen();
+const { mywomenservices, getWomenServiceBySubtitle, loading: loadingWomen } = useWomen();
+const { allblogs, loading: loadingBlogs } = useBlog();
+const { allcerts, loading: loadingCerts } = useCert();
+
+
+
+
   const navigate = useNavigate();
+
+  const isLoading = loadingMen || loadingWomen || loadingBlogs || loadingCerts;
+  if (isLoading) {
+    return (
+      <div className="flex justify-center items-center h-screen">
+        <p className="text-xl font-bold text-gray-600">Loading...</p>
+      </div>
+    );
+  }
 
   // Sorting helper function
   const getLatestItems = (items, count = 3) =>
@@ -83,6 +98,8 @@ const CertificateCard = ({ certificate }) => (
     </div>
   </div>
 );
+
+
 
 
   return (

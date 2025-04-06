@@ -9,6 +9,7 @@ const CreateBlog = () => {
   const { createBlog, updateBlog, getBlogById, loading } = useBlog();
   const { id, slug } = useParams(); // Get blogId from URL params for edit mode
   const navigate = useNavigate();
+    const [isSubmitting, setIsSubmitting] = useState(false);
 
   const [formData, setFormData] = useState({
     title: "",
@@ -57,6 +58,8 @@ const CreateBlog = () => {
       return;
     }
 
+    setIsSubmitting(true);
+
     const data = new FormData();
     data.append("title", formData.title);
     data.append("category", formData.category);
@@ -70,6 +73,8 @@ const CreateBlog = () => {
     } else {
       await createBlog(data);
     }
+
+    setIsSubmitting(false);
 
     // Reset form fields and redirect
     setFormData({ title: "", photo: null, category: "", about: "" });
@@ -150,8 +155,8 @@ const CreateBlog = () => {
 
           <div className="flex justify-end space-x-4">
             <button type="submit" className="px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 disabled:bg-gray-400 disabled:cursor-not-allowed"
-  disabled={loading}>
-              {loading ? "Processing..." :isEditMode ? "Update Post" : "Publish Post"}
+  disabled={isSubmitting}>
+              {isSubmitting ? "Processing..." :isEditMode ? "Update Post" : "Publish Post"}
             </button>
           </div>
         </form>

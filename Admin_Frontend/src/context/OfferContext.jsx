@@ -9,7 +9,7 @@ export const OfferContext = createContext();
 export const OfferProvider = ({ children }) => {
   const [myOffers, setMyOffers] = useState([]);
   const [allOffers, setAllOffers] = useState([]);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   const { isAuthenticated } = useAuth(); 
 
@@ -35,12 +35,15 @@ export const OfferProvider = ({ children }) => {
   // Fetch All Active Offers
   const fetchAllOffers = async () => {
     try {
+      setLoading(true);
       const { data } = await axios.get(`${config.apiUrl}/api/offers/all-offers`, {
         withCredentials: true,
       });
       setAllOffers(data);
     } catch (error) {
       // console.error("Failed to load offers", error);
+    }finally {
+      setLoading(false);
     }
   };
 
@@ -97,6 +100,7 @@ export const OfferProvider = ({ children }) => {
 
   // Get Single Offer
   const getOfferById = async (id) => {
+    setLoading(true);
     try {
       const response = await axios.get(`${config.apiUrl}/api/offers/single-offer/${id}`, {
         withCredentials: true,
@@ -106,6 +110,8 @@ export const OfferProvider = ({ children }) => {
     } catch (error) {
       // console.error("Error fetching offer:", error.message);
       return null;
+    }finally {
+      setLoading(false); // Stop loading
     }
   };
 

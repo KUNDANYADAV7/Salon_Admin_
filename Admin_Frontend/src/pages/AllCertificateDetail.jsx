@@ -16,6 +16,7 @@ function AllCertificateDetail() {
 
   const fetchCertificate = async () => {
     setLoading(true);
+    setCertificate(null);
     const certificateData = await getCertById(id);
     if (certificateData) {
       setCertificate(certificateData);
@@ -23,8 +24,23 @@ function AllCertificateDetail() {
     setLoading(false);
   };
 
-  if (loading) return <p className="text-center mt-10 text-gray-500">Loading...</p>;
-  if (!certificate) return <p className="text-center mt-10 text-gray-500">Certificate not found</p>;
+  if (loading) {
+    return (
+      <div className="flex justify-center items-center h-screen">
+        <p className="text-center text-lg text-gray-500">Fetching certificate, please wait...</p>
+      </div>
+    );
+  }
+
+
+
+  if (!certificate) {
+    return (
+      <div className="flex justify-center items-center h-screen">
+        <p className="text-center text-lg text-gray-500">Certificate not found</p>
+      </div>
+    );
+  }
 
   return (
 

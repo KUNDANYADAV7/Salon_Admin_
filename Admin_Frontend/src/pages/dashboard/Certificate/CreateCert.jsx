@@ -11,6 +11,8 @@ const CreateCert = () => {
   const { createCert, updateCert, getCertById, loading } = useCert();
   const { id } = useParams(); // Get blogId from URL params for edit mode
   const navigate = useNavigate();
+  const [isSubmitting, setIsSubmitting] = useState(false); // local state for button
+
 
   const [formData, setFormData] = useState({
     title: "",
@@ -55,17 +57,24 @@ const CreateCert = () => {
       toast.error("Image field is required!"); // Set error message
       return;
     }
+
+    setIsSubmitting(true); // Start submission
+
     const data = new FormData();
     data.append("title", formData.title);
     if (formData.photo) {
       data.append("certificateImage", formData.photo);
     }
 
+
+
     if (isEditMode) {
       await updateCert(id, data);
     } else {
       await createCert(data);
     }
+
+    setIsSubmitting(false); // End submission
 
     // Reset form fields and redirect
     setFormData({ title: "", photo: null });
@@ -121,8 +130,8 @@ const CreateCert = () => {
 
 
           <div className="flex justify-end space-x-4">
-            <button type="submit" className="px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 disabled:bg-gray-400 disabled:cursor-not-allowed" disabled={loading} >
-              {loading ? "Processing..." : isEditMode ? "Update Post" : "Publish Certificate"}
+            <button type="submit" className="px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 disabled:bg-gray-400 disabled:cursor-not-allowed" disabled={isSubmitting} >
+              {isSubmitting ? "Processing..." : isEditMode ? "Update Post" : "Publish Certificate"}
             </button>
           </div>
         </form>

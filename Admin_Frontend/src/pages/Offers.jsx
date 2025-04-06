@@ -3,12 +3,27 @@ import { Calendar } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { useOffer } from '../context/OfferContext';
 import config from '../config';
+import { useEffect } from 'react';
 
 const Offers = () => {
-  const { allOffers } = useOffer();
+  const { allOffers, loading } = useOffer();
+
+  useEffect(()=>{
+    window.scrollTo(0, 0);
+  },[])
+
+  if (loading) {
+    return (
+      <div className="flex justify-center items-center h-screen">
+        <p className="text-xl font-bold text-gray-600">Loading...</p>
+      </div>
+    );
+  }
 
   // Filter offers to only show active ones
   const activeOffers = allOffers.filter(offer => offer.isActive);
+
+
 
   // If no active offers, show a message
   if (activeOffers.length === 0) {
@@ -28,6 +43,7 @@ const Offers = () => {
     </>
     );
   }
+  
 
   return (
     <div className="max-w-6xl mx-auto mt-20 px-4">

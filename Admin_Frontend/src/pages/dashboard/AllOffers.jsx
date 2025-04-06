@@ -6,7 +6,7 @@ import { useNavigate } from 'react-router-dom';
 
 const AllOffers = () => {
   const navigate = useNavigate();
-  const { myOffers, handleDelete, handleToggleStatus, updateOffer, status } = useOffer();
+  const { myOffers, handleDelete, handleToggleStatus, updateOffer, status, loading } = useOffer();
 
   // Sort offers by `validUntil` in descending order
   const sortedOffers = [...myOffers].sort((a, b) => new Date(b.validUntil) - new Date(a.validUntil));
@@ -16,6 +16,14 @@ const AllOffers = () => {
     const updatedOffer = { ...offer, isActive: !offer.isActive };  // Change here to isActive
     await handleToggleStatus(offer._id, updatedOffer);
   };
+
+  if (loading) {
+    return (
+      <div className="flex justify-center items-center h-screen">
+        <p className="text-xl font-bold text-gray-600">Loading...</p>
+      </div>
+    );
+  }
 
   return (
     <div className="max-w-6xl mx-auto">

@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import config from '../../config';
 
 const MensServices = () => {
-  const { mymenservices, getMenServiceBySubtitle } = useMen();
+  const { mymenservices, getMenServiceBySubtitle, loading } = useMen();
   const navigate = useNavigate();
 
   // Sort services by `createdAt` in descending order (latest services first)
@@ -19,8 +19,16 @@ const MensServices = () => {
     navigate(`/home-men-service/${formattedTitle}`);
   };
 
+  if (loading) {
+    return (
+      <div className="flex justify-center items-center h-screen">
+        <p className="text-xl font-bold text-gray-600">Loading...</p>
+      </div>
+    );
+  }
+
   return (
-    <div className="max-w-6xl mx-auto">
+    <div className="max-w-6xl mx-auto ">
       <h1 className="text-3xl font-bold text-gray-800 mb-6 mt-20 text-center">Men's Services</h1>
 
       {sortedMenServices.length === 0 ? (
@@ -30,7 +38,7 @@ const MensServices = () => {
       ) : ( 
         <div className="bg-white rounded-lg  overflow-hidden">
           <div className="p-6">
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-20">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-20 justify-items-center">
               {sortedMenServices.map((service) => (
                 <ServiceCard
                   key={service._id}

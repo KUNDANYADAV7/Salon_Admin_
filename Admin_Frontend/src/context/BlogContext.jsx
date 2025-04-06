@@ -12,7 +12,7 @@ export const BlogContext = createContext();
 export const BlogProvider = ({ children }) => {
   const [myblogs, setMyBlogs] = useState([]);
   const [allblogs, setAllBlogs] = useState([]);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
 
       const { isAuthenticated } = useAuth();
 
@@ -39,12 +39,15 @@ export const BlogProvider = ({ children }) => {
   // Fetch All Blogs of User
   const fetchAllBlogs = async () => {
     try {
+      setLoading(true);
       const { data } = await axios.get(
         `${config.apiUrl}/api/blogs/all-blogs`,
         { withCredentials: true }
       );
       setAllBlogs(data);
     } catch (error) {
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -112,6 +115,7 @@ export const BlogProvider = ({ children }) => {
 
 
     const getBlogById = async (slug) => {
+      setLoading(true);
       try {
         const response = await axios.get(`${config.apiUrl}/api/blogs/single-blog/slug/${slug}`, {
           withCredentials: true,
@@ -122,6 +126,8 @@ export const BlogProvider = ({ children }) => {
       } catch (error) {
         // console.error("Error fetching blog:", error.message);
         return null;
+      }finally {
+        setLoading(false); // Stop loading
       }
     };
     

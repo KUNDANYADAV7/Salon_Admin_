@@ -9,6 +9,7 @@ const CreateOffer = () => {
   const { createOffer, updateOffer, getOfferById, loading } = useOffer();
   const { id } = useParams();
   const navigate = useNavigate();
+   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const [formData, setFormData] = useState({
     title: "",
@@ -65,6 +66,8 @@ const CreateOffer = () => {
       return;
     }
 
+    setIsSubmitting(true);
+
     const data = new FormData();
     data.append("title", formData.title);
     data.append("description", formData.description);
@@ -83,6 +86,9 @@ const CreateOffer = () => {
     } else {
       await createOffer(data);
     }
+
+    setIsSubmitting(false); // End submission
+
 
     setFormData({
       title: "",
@@ -190,8 +196,8 @@ const CreateOffer = () => {
             <label className="ml-2 text-sm">Active</label>
           </div> */}
 
-          <button type="submit" className="px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 disabled:bg-gray-400 disabled:cursor-not-allowed" disabled={loading} >
-            {loading ? "Processing..." : isEditMode ? "Update Offer" : "Create Offer"}
+          <button type="submit" className="px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 disabled:bg-gray-400 disabled:cursor-not-allowed" disabled={isSubmitting} >
+            {isSubmitting ? "Processing..." : isEditMode ? "Update Offer" : "Create Offer"}
           </button>
         </form>
       </div>

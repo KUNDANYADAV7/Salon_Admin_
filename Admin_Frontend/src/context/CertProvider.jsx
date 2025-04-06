@@ -10,7 +10,8 @@ export const CertContext = createContext();
 export const CertProvider = ({ children }) => {
   const [mycerts, setMyCerts] = useState([]);
   const [allcerts, setAllCerts] = useState([]);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
+  
 
     const { isAuthenticated } = useAuth(); 
 
@@ -37,12 +38,15 @@ export const CertProvider = ({ children }) => {
   // Fetch All Certificates of User
   const fetchAllCerts = async () => {
     try {
+      setLoading(true);
       const { data } = await axios.get(
         `${config.apiUrl}/api/certificates/all-certificates`,
         { withCredentials: true }
       );
       setAllCerts(data);
     } catch (error) {
+    }finally {
+      setLoading(false);
     }
   };
 
@@ -110,6 +114,7 @@ export const CertProvider = ({ children }) => {
 
 
     const getCertById = async (id) => {
+      setLoading(true);
       try {
         const response = await axios.get(`${config.apiUrl}/api/certificates/single-certificate/${id}`, {
           withCredentials: true,
@@ -120,6 +125,9 @@ export const CertProvider = ({ children }) => {
       } catch (error) {
         // console.error("Error fetching certificate:", error.message);
         return null;
+      }
+      finally {
+        setLoading(false); // Stop loading
       }
     };
     

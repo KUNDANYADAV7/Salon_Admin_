@@ -74,6 +74,7 @@ function Register() {
             onChange={(e) => setName(e.target.value)}
             className="w-full p-2 mb-4 border rounded-md"
             required
+            disabled={loading} 
           />
 
           <input
@@ -83,6 +84,7 @@ function Register() {
             onChange={(e) => setEmail(e.target.value)}
             className="w-full p-2 mb-4 border rounded-md"
             required
+            disabled={loading} 
           />
 
           <input
@@ -100,6 +102,7 @@ function Register() {
             maxLength={10} // Prevents typing more than 10 characters
             className="w-full p-2 mb-4 border rounded-md"
             required
+            disabled={loading} 
           />
 
           <input
@@ -109,6 +112,7 @@ function Register() {
             onChange={(e) => setPassword(e.target.value)}
             className="w-full p-2 mb-4 border rounded-md"
             required
+            disabled={loading} 
           />
           <button
             type="submit"
